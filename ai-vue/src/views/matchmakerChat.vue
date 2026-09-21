@@ -125,7 +125,7 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Plus, DeleteFilled, Promotion } from '@element-plus/icons-vue'
-import { fetchEventSource } from '@microsoft/fetch-event-source'
+
 import {
     startMatchmakerSession,
     getMatchmakerSessionList,
@@ -276,7 +276,7 @@ const getGreeting = () => {
 
 // 调用 AI 流式回复
 // 调用 AI 流式回复
-const startAIResponse = (sessionId, userMsg) => {
+const startAIResponse = async (sessionId, userMsg) => {
     if (isAiTyping.value) return
     isAiTyping.value = true
 
@@ -301,75 +301,81 @@ const startAIResponse = (sessionId, userMsg) => {
     })
     scrollToBottom()
 
-    let doneReceived = false
+        let doneReceived = false
 
-    fetchEventSource(getMatchmakerStreamUrl(gender.value), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'token': localStorage.getItem('token') || '',
-            'Accept': 'text/event-stream'
-        },
-        body: JSON.stringify({ sessionId: sessionId, userMessage: userMsg }),
+        try {
+            const response = await fetch(getMatchmakerStreamUrl(gender.value), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': localStorage.getItem('token') || '',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({ sessionId: sessionId, userMessage: userMsg })
+            })
 
-        onopen: async (response) => {
-            const ct = response.headers.get('Content-Type') || ''
-            if (!ct.includes('text/event-stream')) {
-                console.error('非SSE响应:', ct)
-                unlock()
-                try {
-                    const text = await response.text()
-                    const aiMessage = messages.value.find(m => m.id === aiMsgId)
-                    if (aiMessage) aiMessage.content = text || '服务异常，请重试'
-                } catch {}
-                return
-            }
-        },
-
-        onmessage: (event) => {
-            const aiMessage = messages.value.find(m => m.id === aiMsgId)
-            if (!aiMessage) return
-
-            const eventName = event.event || ''
-            const raw = event.data || ''
-
-            if (eventName === 'done') {
-                doneReceived = true
-                unlock()
-                return
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`)
             }
 
-            if (eventName === 'error') {
-                aiMessage.content = '回复出错了，请重试'
-                unlock()
-                return
-            }
+            const reader = response.body.getReader()
+            const decoder = new TextDecoder()
+            let buffer = ''
 
-            try {
-                const payload = JSON.parse(raw)
-                if (payload.code == 200 && payload.data?.content) {
-                    aiMessage.content += payload.data.content
-                    scrollToBottom()
+            const processChunk = (chunk) => {
+                buffer += decoder.decode(chunk, { stream: true })
+                const lines = buffer.split('\n')
+                buffer = lines.pop() || ''
+
+                let eventName = ''
+                for (const line of lines) {
+                    if (line.startsWith('event:')) {
+                        eventName = line.substring(6).trim()
+                    } else if (line.startsWith('data:')) {
+                        const raw = line.substring(5).trim()
+                        const aiMessage = messages.value.find(m => m.id === aiMsgId)
+                        if (!aiMessage) continue
+
+                        if (eventName === 'done') {
+                            doneReceived = true
+                            unlock()
+                            return
+                        }
+                        if (eventName === 'error') {
+                            aiMessage.content = '回复出错了，请重试'
+                            unlock()
+                            return
+                        }
+
+                        try {
+                            const payload = JSON.parse(raw)
+                            if (payload.code == 200 && payload.data?.content) {
+                                aiMessage.content += payload.data.content
+                                scrollToBottom()
+                            }
+                        } catch (e) {
+                            console.warn('chunk解析失败:', e)
+                        }
+                    }
                 }
-            } catch (e) {
-                console.warn('chunk解析失败:', e)
             }
-        },
 
-        onerror: (err) => {
-            console.error('SSE onerror:', err)
+            while (true) {
+                const { done, value } = await reader.read()
+                if (done) break
+                processChunk(value)
+            }
+
+            if (!doneReceived) unlock()
+        } catch (err) {
+            console.error('SSE error:', err)
             const aiMessage = messages.value.find(m => m.id === aiMsgId)
             if (aiMessage && !aiMessage.content) {
                 aiMessage.content = '回复失败，请重试'
             }
             unlock()
-            throw err  // ✅ 阻止自动重试
-        },
-
-        onclose: () => {
-            if (!doneReceived) unlock()
         }
-    })
+
 }
 
 // 获取会话列表

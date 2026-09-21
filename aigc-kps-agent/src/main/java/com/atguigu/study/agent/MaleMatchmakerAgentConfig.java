@@ -1,11 +1,20 @@
 package com.atguigu.study.agent;
 
 import com.alibaba.cloud.ai.graph.agent.ReactAgent;
+import com.alibaba.cloud.ai.graph.agent.hook.skills.SkillsAgentHook;
 import com.alibaba.cloud.ai.graph.agent.renderer.SaaStTemplateRenderer;
+import com.alibaba.cloud.ai.graph.skills.registry.SkillRegistry;
+import com.alibaba.cloud.ai.graph.skills.registry.classpath.ClasspathSkillRegistry;
+import com.atguigu.study.skill.CelebrityMatchTool;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * 针对女性用户提供男性红娘工作流的智能体配置
@@ -39,7 +48,23 @@ public class MaleMatchmakerAgentConfig {
     @Bean
     @Qualifier("maleMatchmakerAgent")
     public ReactAgent maleMatchmakerAgent(
-            @Qualifier("plusChatModel") ChatModel chatModel) {
+            @Qualifier("plusChatModel") ChatModel chatModel,
+            CelebrityMatchTool celebrityMatchTool) {
+
+        // 加载 skills 目录下的 SKILL.md
+        SkillRegistry registry = ClasspathSkillRegistry.builder()
+                .classpathPath("skills")
+                .build();
+        SkillsAgentHook skillsHook = SkillsAgentHook.builder()
+                .skillRegistry(registry)
+                .build();
+
+        // 注册 @Tool 方法
+        ToolCallbackProvider toolProvider = MethodToolCallbackProvider.builder()
+                .toolObjects(celebrityMatchTool)
+                .build();
+
+
         return ReactAgent.builder()
                 .name("maleMatchmakerAgent")
                 .model(chatModel)
@@ -47,6 +72,8 @@ public class MaleMatchmakerAgentConfig {
                 .description("资深情感红娘，专门帮女生找到心仪的男生")
                 .outputKey("maleMatchmakerAgentResponse")
                 .templateRenderer(TEMPLATE_RENDERER)
+                .tools(toolProvider.getToolCallbacks())
+                .hooks(List.of(skillsHook))
                 .enableLogging(true)
                 .build();
     }
