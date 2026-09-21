@@ -4,6 +4,7 @@ import com.alibaba.cloud.ai.graph.CompiledGraph;
 import com.alibaba.cloud.ai.graph.NodeOutput;
 import com.atguigu.study.domain.ConsultationSession;
 import com.atguigu.study.dto.command.ConsultationSessionCreateDTO;
+import com.atguigu.study.skill.CelebrityMatchTool;
 import com.atguigu.study.tool.PartnerSearchTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class MatchmakerService {
     @Autowired
     @Qualifier("FemaleMatchmakerGraph")
     private CompiledGraph femaleMatchmakerGraph;
+
+    @Autowired
+    private CelebrityMatchTool celebrityMatchTool;
 
 
     @Autowired
@@ -79,7 +83,8 @@ public class MatchmakerService {
         String searchQuery = chatHistory + "\n用户最新消息：" + userMessage;
         String matchedPartners = "";
         try {
-            matchedPartners = partnerSearchTool.searchPartners(searchQuery, targetGender, sessionId);
+//            matchedPartners = partnerSearchTool.searchPartners(searchQuery, targetGender, sessionId);
+            matchedPartners = celebrityMatchTool.celebrityMatch(searchQuery, targetGender, sessionId);
         } catch (Exception e) {
             log.warn("向量检索失败: {}", e.getMessage());
         }
