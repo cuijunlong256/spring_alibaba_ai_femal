@@ -1,0 +1,93 @@
+spring:
+  datasource:
+    jdbc-url: jdbc:mysql://localhost:3306/mental_health_assistant?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mvc:
+    async:
+      request-timeout: 120000
+
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+    openai:
+      api-key: sk-tu7qyJrRszUBhGEGNQzMSZlQnTIdWtRsX1Kc1Vw7MmQicOx4
+      base-url: https://tokenhub.tencentmaas.com
+      chat:
+        options:
+          model: glm-5.1
+    # pgvector 向量存储配置
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 768
+        initialize-schema: true
+
+    alibaba:
+      a2a:
+        nacos:
+          server-addr: 39.96.42.202:8848
+          username: nacos
+          password: nacos
+          discovery:
+            enabled: false
+          registry:
+            enabled: true
+        server:
+          version: 1.0.0
+          card:
+            name: dataAnalysisAgent
+            description: 专门用于数据分析和统计计算的本地智能体
+            provider:
+              name: Spring AI Alibaba Documentation
+              organization: Spring AI Alibaba
+              url: https://sca.aliyun.com/ai/
+              contact:
+                email: dev@alibabacloud.com
+    mcp:
+      client:
+        type: async
+        request-timeout: 120s
+        toolcallback:
+          enabled: true
+        stdio:
+          servers-configuration: classpath:/mcp-server.json
+
+server:
+  port: 1236
+
+jwt:
+  secret: MySecretKeyForJWT2025!@#$%^&*()_+SecureKeyHere
+  expiration: 86400000
+  refresh-expiration: 604800000
+  header: Authorization
+  token-prefix: "Bearer "
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.atguigu.study.domain
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+# ===== PostgreSQL（pgvector）独立配置 =====
+pg:
+  datasource:
+    jdbc-url: jdbc:postgresql://39.96.42.202:5432/matchmaker
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  level:
+    com.atguigu.study: INFO
+    com.alibaba.cloud.ai.graph.agent.node.AgentLlmNode: WARN
+    org.apache.catalina.connector: WARN
+    org.springframework.web.servlet.mvc.method.annotation: WARN
+

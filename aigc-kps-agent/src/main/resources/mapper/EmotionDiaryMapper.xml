@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.study.mapper.EmotionDiaryMapper">
+  <resultMap id="BaseResultMap" type="com.atguigu.study.domain.EmotionDiary">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="diary_date" jdbcType="DATE" property="diaryDate" />
+    <result column="mood_score" jdbcType="TINYINT" property="moodScore" />
+    <result column="dominant_emotion" jdbcType="VARCHAR" property="dominantEmotion" />
+    <result column="sleep_quality" jdbcType="TINYINT" property="sleepQuality" />
+    <result column="stress_level" jdbcType="TINYINT" property="stressLevel" />
+    <result column="ai_analysis_updated_at" jdbcType="TIMESTAMP" property="aiAnalysisUpdatedAt" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.atguigu.study.domain.EmotionDiaryWithBLOBs">
+    <result column="emotion_triggers" jdbcType="LONGVARCHAR" property="emotionTriggers" />
+    <result column="diary_content" jdbcType="LONGVARCHAR" property="diaryContent" />
+    <result column="ai_emotion_analysis" jdbcType="LONGVARCHAR" property="aiEmotionAnalysis" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, diary_date, mood_score, dominant_emotion, sleep_quality, stress_level, 
+    ai_analysis_updated_at, created_at, updated_at
+  </sql>
+  <sql id="Blob_Column_List">
+    emotion_triggers, diary_content, ai_emotion_analysis
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.atguigu.study.domain.EmotionDiaryExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from emotion_diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.atguigu.study.domain.EmotionDiaryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from emotion_diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from emotion_diary
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from emotion_diary
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atguigu.study.domain.EmotionDiaryExample">
+    delete from emotion_diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atguigu.study.domain.EmotionDiaryWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emotion_diary (user_id, diary_date, mood_score, 
+      dominant_emotion, sleep_quality, stress_level, 
+      ai_analysis_updated_at, created_at, updated_at, 
+      emotion_triggers, diary_content, 
+      ai_emotion_analysis)
+    values (#{userId,jdbcType=BIGINT}, #{diaryDate,jdbcType=DATE}, #{moodScore,jdbcType=TINYINT}, 
+      #{dominantEmotion,jdbcType=VARCHAR}, #{sleepQuality,jdbcType=TINYINT}, #{stressLevel,jdbcType=TINYINT}, 
+      #{aiAnalysisUpdatedAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{emotionTriggers,jdbcType=LONGVARCHAR}, #{diaryContent,jdbcType=LONGVARCHAR}, 
+      #{aiEmotionAnalysis,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atguigu.study.domain.EmotionDiaryWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into emotion_diary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="diaryDate != null">
+        diary_date,
+      </if>
+      <if test="moodScore != null">
+        mood_score,
+      </if>
+      <if test="dominantEmotion != null">
+        dominant_emotion,
+      </if>
+      <if test="sleepQuality != null">
+        sleep_quality,
+      </if>
+      <if test="stressLevel != null">
+        stress_level,
+      </if>
+      <if test="aiAnalysisUpdatedAt != null">
+        ai_analysis_updated_at,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="emotionTriggers != null">
+        emotion_triggers,
+      </if>
+      <if test="diaryContent != null">
+        diary_content,
+      </if>
+      <if test="aiEmotionAnalysis != null">
+        ai_emotion_analysis,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="diaryDate != null">
+        #{diaryDate,jdbcType=DATE},
+      </if>
+      <if test="moodScore != null">
+        #{moodScore,jdbcType=TINYINT},
+      </if>
+      <if test="dominantEmotion != null">
+        #{dominantEmotion,jdbcType=VARCHAR},
+      </if>
+      <if test="sleepQuality != null">
+        #{sleepQuality,jdbcType=TINYINT},
+      </if>
+      <if test="stressLevel != null">
+        #{stressLevel,jdbcType=TINYINT},
+      </if>
+      <if test="aiAnalysisUpdatedAt != null">
+        #{aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emotionTriggers != null">
+        #{emotionTriggers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="diaryContent != null">
+        #{diaryContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="aiEmotionAnalysis != null">
+        #{aiEmotionAnalysis,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atguigu.study.domain.EmotionDiaryExample" resultType="java.lang.Long">
+    select count(*) from emotion_diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update emotion_diary
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.diaryDate != null">
+        diary_date = #{record.diaryDate,jdbcType=DATE},
+      </if>
+      <if test="record.moodScore != null">
+        mood_score = #{record.moodScore,jdbcType=TINYINT},
+      </if>
+      <if test="record.dominantEmotion != null">
+        dominant_emotion = #{record.dominantEmotion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sleepQuality != null">
+        sleep_quality = #{record.sleepQuality,jdbcType=TINYINT},
+      </if>
+      <if test="record.stressLevel != null">
+        stress_level = #{record.stressLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.aiAnalysisUpdatedAt != null">
+        ai_analysis_updated_at = #{record.aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.emotionTriggers != null">
+        emotion_triggers = #{record.emotionTriggers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.diaryContent != null">
+        diary_content = #{record.diaryContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.aiEmotionAnalysis != null">
+        ai_emotion_analysis = #{record.aiEmotionAnalysis,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update emotion_diary
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      diary_date = #{record.diaryDate,jdbcType=DATE},
+      mood_score = #{record.moodScore,jdbcType=TINYINT},
+      dominant_emotion = #{record.dominantEmotion,jdbcType=VARCHAR},
+      sleep_quality = #{record.sleepQuality,jdbcType=TINYINT},
+      stress_level = #{record.stressLevel,jdbcType=TINYINT},
+      ai_analysis_updated_at = #{record.aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      emotion_triggers = #{record.emotionTriggers,jdbcType=LONGVARCHAR},
+      diary_content = #{record.diaryContent,jdbcType=LONGVARCHAR},
+      ai_emotion_analysis = #{record.aiEmotionAnalysis,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update emotion_diary
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      diary_date = #{record.diaryDate,jdbcType=DATE},
+      mood_score = #{record.moodScore,jdbcType=TINYINT},
+      dominant_emotion = #{record.dominantEmotion,jdbcType=VARCHAR},
+      sleep_quality = #{record.sleepQuality,jdbcType=TINYINT},
+      stress_level = #{record.stressLevel,jdbcType=TINYINT},
+      ai_analysis_updated_at = #{record.aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.study.domain.EmotionDiaryWithBLOBs">
+    update emotion_diary
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="diaryDate != null">
+        diary_date = #{diaryDate,jdbcType=DATE},
+      </if>
+      <if test="moodScore != null">
+        mood_score = #{moodScore,jdbcType=TINYINT},
+      </if>
+      <if test="dominantEmotion != null">
+        dominant_emotion = #{dominantEmotion,jdbcType=VARCHAR},
+      </if>
+      <if test="sleepQuality != null">
+        sleep_quality = #{sleepQuality,jdbcType=TINYINT},
+      </if>
+      <if test="stressLevel != null">
+        stress_level = #{stressLevel,jdbcType=TINYINT},
+      </if>
+      <if test="aiAnalysisUpdatedAt != null">
+        ai_analysis_updated_at = #{aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emotionTriggers != null">
+        emotion_triggers = #{emotionTriggers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="diaryContent != null">
+        diary_content = #{diaryContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="aiEmotionAnalysis != null">
+        ai_emotion_analysis = #{aiEmotionAnalysis,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.atguigu.study.domain.EmotionDiaryWithBLOBs">
+    update emotion_diary
+    set user_id = #{userId,jdbcType=BIGINT},
+      diary_date = #{diaryDate,jdbcType=DATE},
+      mood_score = #{moodScore,jdbcType=TINYINT},
+      dominant_emotion = #{dominantEmotion,jdbcType=VARCHAR},
+      sleep_quality = #{sleepQuality,jdbcType=TINYINT},
+      stress_level = #{stressLevel,jdbcType=TINYINT},
+      ai_analysis_updated_at = #{aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      emotion_triggers = #{emotionTriggers,jdbcType=LONGVARCHAR},
+      diary_content = #{diaryContent,jdbcType=LONGVARCHAR},
+      ai_emotion_analysis = #{aiEmotionAnalysis,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.study.domain.EmotionDiary">
+    update emotion_diary
+    set user_id = #{userId,jdbcType=BIGINT},
+      diary_date = #{diaryDate,jdbcType=DATE},
+      mood_score = #{moodScore,jdbcType=TINYINT},
+      dominant_emotion = #{dominantEmotion,jdbcType=VARCHAR},
+      sleep_quality = #{sleepQuality,jdbcType=TINYINT},
+      stress_level = #{stressLevel,jdbcType=TINYINT},
+      ai_analysis_updated_at = #{aiAnalysisUpdatedAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

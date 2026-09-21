@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/aigc-kps-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-agent-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-agent-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-graph-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-graph-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-sandbox/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-sandbox/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-studio/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-ai-alibaba-studio/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-a2a-nacos/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-a2a-nacos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-agentscope/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-agentscope/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-builtin-nodes/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-builtin-nodes/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-config-nacos/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-config-nacos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-graph-observation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/spring-boot-starters/spring-ai-alibaba-starter-graph-observation/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-ai-alibaba/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

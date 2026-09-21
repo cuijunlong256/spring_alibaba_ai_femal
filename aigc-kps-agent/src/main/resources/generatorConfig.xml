@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="MySqlContext" targetRuntime="MyBatis3">
+        <!-- 自动给关键字添加分隔符（MySQL 反引号） -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 注释生成器：取消所有自动生成的注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接信息（保留 tinyInt1isBit=false 防止驱动层误判） -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mental_health_assistant?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;tinyInt1isBit=false"
+                        userId="root"
+                        password="123456">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- Java 类型解析器 -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+            <!-- 使用 JSR310 时间类型 (LocalDate, LocalDateTime) -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 实体类（POJO）生成配置 -->
+        <javaModelGenerator targetPackage="com.atguigu.study.domain"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- Mapper XML 映射文件生成配置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- Mapper 接口（DAO）生成配置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.atguigu.study.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- ===================== 表配置（全字段显式覆盖） ===================== -->
+
+        <!-- 1. AI 分析任务表 -->
+<!--        <table tableName="ai_analysis_task" domainObjectName="AiAnalysisTask" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="diary_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="status" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="task_type" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="priority" javaType="java.lang.Integer" jdbcType="INTEGER" />-->
+<!--            <columnOverride column="retry_count" javaType="java.lang.Integer" jdbcType="INTEGER" />-->
+<!--            <columnOverride column="max_retry_count" javaType="java.lang.Integer" jdbcType="INTEGER" />-->
+<!--            <columnOverride column="error_message" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="started_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="completed_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 2. 咨询消息表 -->
+<!--        <table tableName="consultation_message" domainObjectName="ConsultationMessage" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="session_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="sender_type" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="message_type" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="emotion_tag" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="ai_model" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 3. 咨询会话表 -->
+        <table tableName="consultation_session" domainObjectName="ConsultationSession" schema="mental_health_assistant">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <columnOverride column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <columnOverride column="session_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="started_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
+            <columnOverride column="last_emotion_analysis" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="last_emotion_updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
+        </table>
+
+        <!-- 4. 情绪日记表 -->
+<!--        <table tableName="emotion_diary" domainObjectName="EmotionDiary" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="diary_date" javaType="java.time.LocalDate" jdbcType="DATE" />-->
+<!--            <columnOverride column="mood_score" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="dominant_emotion" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="emotion_triggers" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="diary_content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="sleep_quality" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="stress_level" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="ai_emotion_analysis" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="ai_analysis_updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 5. 知识文章表 -->
+<!--        <table tableName="knowledge_article" domainObjectName="KnowledgeArticle" schema="mental_health_assistant">-->
+<!--            &lt;!&ndash; 主键为 UUID，无自增 &ndash;&gt;-->
+<!--            <columnOverride column="id" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="category_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="title" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="summary" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="cover_image" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="tags" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="author_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="read_count" javaType="java.lang.Integer" jdbcType="INTEGER" />-->
+<!--            &lt;!&ndash; status 保持 Boolean，如需要 Integer 请改为 java.lang.Integer &ndash;&gt;-->
+<!--            <columnOverride column="status" javaType="java.lang.Boolean" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="published_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 6. 知识分类表 -->
+<!--        <table tableName="knowledge_category" domainObjectName="KnowledgeCategory" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="parent_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="category_name" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="category_code" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="description" javaType="java.lang.String" jdbcType="LONGVARCHAR" />-->
+<!--            <columnOverride column="sort_order" javaType="java.lang.Integer" jdbcType="INTEGER" />-->
+<!--            <columnOverride column="status" javaType="java.lang.Boolean" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 7. 系统文件信息表 -->
+<!--        <table tableName="sys_file_info" domainObjectName="SysFileInfo" schema="mental_health_assistant"    >-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="original_name" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="file_path" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="file_size" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="file_type" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="business_type" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="business_id" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="business_field" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="upload_user_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="is_temp" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="status" javaType="java.lang.Boolean" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="expire_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 8. 用户表 -->
+<!--        <table tableName="user" domainObjectName="User" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="username" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="email" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="password" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="nickname" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="avatar" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="gender" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="birthday" javaType="java.time.LocalDate" jdbcType="DATE" />-->
+<!--            <columnOverride column="user_type" javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="status" javaType="java.lang.Boolean" jdbcType="TINYINT" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--            <columnOverride column="updated_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 9. 用户收藏表 -->
+<!--        <table tableName="user_favorite" domainObjectName="UserFavorite" schema="mental_health_assistant">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />-->
+<!--            <columnOverride column="article_id" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />-->
+<!--        </table>-->
+
+        <!-- 10. 红娘推荐记录表 -->
+        <table tableName="matchmaker_recommendation" domainObjectName="MatchmakerRecommendation" schema="mental_health_assistant">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <columnOverride column="session_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <columnOverride column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <columnOverride column="partner_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="partner_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="created_at" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
+        </table>
+
+    </context>
+
+
+</generatorConfiguration>

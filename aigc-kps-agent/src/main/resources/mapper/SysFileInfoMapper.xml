@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.study.mapper.SysFileInfoMapper">
+  <resultMap id="BaseResultMap" type="com.atguigu.study.domain.SysFileInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="original_name" jdbcType="VARCHAR" property="originalName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_size" jdbcType="BIGINT" property="fileSize" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="business_field" jdbcType="VARCHAR" property="businessField" />
+    <result column="upload_user_id" jdbcType="BIGINT" property="uploadUserId" />
+    <result column="is_temp" jdbcType="TINYINT" property="isTemp" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, original_name, file_path, file_size, file_type, business_type, business_id, business_field, 
+    upload_user_id, is_temp, status, create_time, expire_time
+  </sql>
+  <select id="selectByExample" parameterType="com.atguigu.study.domain.SysFileInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_file_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_file_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_file_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atguigu.study.domain.SysFileInfoExample">
+    delete from sys_file_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atguigu.study.domain.SysFileInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_file_info (original_name, file_path, file_size, 
+      file_type, business_type, business_id, 
+      business_field, upload_user_id, is_temp, 
+      status, create_time, expire_time
+      )
+    values (#{originalName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{fileSize,jdbcType=BIGINT}, 
+      #{fileType,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR}, 
+      #{businessField,jdbcType=VARCHAR}, #{uploadUserId,jdbcType=BIGINT}, #{isTemp,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atguigu.study.domain.SysFileInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_file_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="originalName != null">
+        original_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="fileSize != null">
+        file_size,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="businessField != null">
+        business_field,
+      </if>
+      <if test="uploadUserId != null">
+        upload_user_id,
+      </if>
+      <if test="isTemp != null">
+        is_temp,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="originalName != null">
+        #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        #{fileSize,jdbcType=BIGINT},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessField != null">
+        #{businessField,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadUserId != null">
+        #{uploadUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isTemp != null">
+        #{isTemp,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atguigu.study.domain.SysFileInfoExample" resultType="java.lang.Long">
+    select count(*) from sys_file_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_file_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.originalName != null">
+        original_name = #{record.originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePath != null">
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileSize != null">
+        file_size = #{record.fileSize,jdbcType=BIGINT},
+      </if>
+      <if test="record.fileType != null">
+        file_type = #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null">
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessId != null">
+        business_id = #{record.businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessField != null">
+        business_field = #{record.businessField,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uploadUserId != null">
+        upload_user_id = #{record.uploadUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isTemp != null">
+        is_temp = #{record.isTemp,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expireTime != null">
+        expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_file_info
+    set id = #{record.id,jdbcType=BIGINT},
+      original_name = #{record.originalName,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      file_size = #{record.fileSize,jdbcType=BIGINT},
+      file_type = #{record.fileType,jdbcType=VARCHAR},
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=VARCHAR},
+      business_field = #{record.businessField,jdbcType=VARCHAR},
+      upload_user_id = #{record.uploadUserId,jdbcType=BIGINT},
+      is_temp = #{record.isTemp,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      expire_time = #{record.expireTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.study.domain.SysFileInfo">
+    update sys_file_info
+    <set>
+      <if test="originalName != null">
+        original_name = #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        file_size = #{fileSize,jdbcType=BIGINT},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessField != null">
+        business_field = #{businessField,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadUserId != null">
+        upload_user_id = #{uploadUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isTemp != null">
+        is_temp = #{isTemp,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.study.domain.SysFileInfo">
+    update sys_file_info
+    set original_name = #{originalName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=BIGINT},
+      file_type = #{fileType,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=VARCHAR},
+      business_field = #{businessField,jdbcType=VARCHAR},
+      upload_user_id = #{uploadUserId,jdbcType=BIGINT},
+      is_temp = #{isTemp,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

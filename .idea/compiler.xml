@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="aigc-kps-agent" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spring-ai-alibaba" target="17" />
+      <module name="spring-ai-alibaba-agent-framework" target="17" />
+      <module name="spring-ai-alibaba-bom" target="17" />
+      <module name="spring-ai-alibaba-graph-core" target="17" />
+      <module name="spring-ai-alibaba-sandbox" target="17" />
+      <module name="spring-ai-alibaba-starter-a2a-nacos" target="17" />
+      <module name="spring-ai-alibaba-starter-agentscope" target="17" />
+      <module name="spring-ai-alibaba-starter-builtin-nodes" target="17" />
+      <module name="spring-ai-alibaba-starter-config-nacos" target="17" />
+      <module name="spring-ai-alibaba-starter-graph-observation" target="17" />
+      <module name="spring-ai-alibaba-studio" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aigc-kps-agent" options="-parameters -parameters" />
+      <module name="spring-ai-alibaba" options="-parameters" />
+      <module name="spring-ai-alibaba-agent-framework" options="-parameters" />
+      <module name="spring-ai-alibaba-bom" options="-parameters" />
+      <module name="spring-ai-alibaba-graph-core" options="-parameters" />
+      <module name="spring-ai-alibaba-sandbox" options="-parameters" />
+      <module name="spring-ai-alibaba-starter-a2a-nacos" options="-parameters" />
+      <module name="spring-ai-alibaba-starter-agentscope" options="-parameters" />
+      <module name="spring-ai-alibaba-starter-builtin-nodes" options="-parameters" />
+      <module name="spring-ai-alibaba-starter-config-nacos" options="-parameters" />
+      <module name="spring-ai-alibaba-starter-graph-observation" options="-parameters" />
+      <module name="spring-ai-alibaba-studio" options="-parameters" />
+    </option>
+  </component>
+</project>
